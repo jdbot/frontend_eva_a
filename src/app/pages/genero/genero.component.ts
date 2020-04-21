@@ -3,7 +3,11 @@ import { GeneroDialogoComponent } from './genero-dialogo/genero-dialogo.componen
 import { Genero } from './../../_model/genero';
 import { GeneroService } from './../../_service/genero.service';
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { MatTableDataSource, MatPaginator, MatSort, MatDialog, MatSnackBar } from '@angular/material';
+import { MatTableDataSource } from '@angular/material/table';
+import { MatPaginator } from '@angular/material/paginator';
+import { MatSort } from '@angular/material/sort';
+import { MatDialog } from '@angular/material/dialog';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-genero',
@@ -12,6 +16,7 @@ import { MatTableDataSource, MatPaginator, MatSort, MatDialog, MatSnackBar } fro
 })
 export class GeneroComponent implements OnInit {
 
+  cantidad: number = 0;
   dataSource: MatTableDataSource<Genero>;
   displayedColumns: string[] = ['idGenero', 'nombre', 'acciones'];
   @ViewChild(MatSort, { static: true }) sort: MatSort;
@@ -36,11 +41,19 @@ export class GeneroComponent implements OnInit {
       });
     });
 
-    this.generoService.listar().subscribe(data => {
+    this.generoService.listarPageable(0, 10).subscribe(data => {
+      this.cantidad = data.totalElements;
+
+      this.dataSource = new MatTableDataSource(data.content);
+      //this.dataSource.paginator = this.paginator;
+      this.dataSource.sort = this.sort;
+    });
+
+    /*this.generoService.listar().subscribe(data => {
       this.dataSource = new MatTableDataSource(data);
       this.dataSource.paginator = this.paginator;
       this.dataSource.sort = this.sort;
-    });
+    });*/
   }
 
   openDialog(genero?: Genero) {
@@ -62,5 +75,16 @@ export class GeneroComponent implements OnInit {
 
   filter(x: string) {
     this.dataSource.filter = x.trim().toLowerCase();
+  }
+
+  mostrarMas(e : any){
+    //console.log(e);
+    this.generoService.listarPageable(e.pageIndex, e.pageSize).subscribe(data => {
+      this.cantidad = data.totalElements;
+
+      this.dataSource = new MatTableDataSource(data.content);
+      //this.dataSource.paginator = this.paginator;
+      this.dataSource.sort = this.sort;
+    });
   }
 }

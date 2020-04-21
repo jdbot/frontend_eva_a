@@ -1,0 +1,6 @@
+<mat-toolbar>Mi Perfil</mat-toolbar>
+<br>
+<h2 class="mat-h2">Usuario: {{nombreUsuario}}</h2>
+<h3>Roles: {{rolesUsuario}}</h3>
+<br>
+<img mat-card-image [src]="imagenData" *ngIf="imagenEstado" width="50%" height="50%" />

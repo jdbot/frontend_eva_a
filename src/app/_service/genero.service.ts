@@ -13,11 +13,16 @@ export class GeneroService {
   mensajeCambio = new Subject<string>();
 
   url: string = `${environment.HOST}/generos`;
+  //url: string = `${environment.HOST}/${environment.MICRO_CRUD}/generos`;   
 
   constructor(private http: HttpClient) { }
 
   listar(){
     return this.http.get<Genero[]>(this.url);
+  }
+
+  listarPageable(p: number, s: number) {
+    return this.http.get<any>(`${this.url}/pageable?page=${p}&size=${s}`); //&sort=nombre
   }
 
   listarPorId(id: number) {

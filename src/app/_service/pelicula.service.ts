@@ -13,6 +13,7 @@ export class PeliculaService {
   mensajeCambio = new Subject<string>();
 
   url: string = `${environment.HOST}/peliculas`;  
+  //url: string = `${environment.HOST}/${environment.MICRO_CRUD}/peliculas`;  
 
   constructor(private http : HttpClient) { }
 

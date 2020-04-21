@@ -8,15 +8,19 @@
     </mat-form-field>
   </div>
 
-  <mat-form-field class="example-full-width">          
+  <mat-form-field class="example-full-width">    
+    <div *ngIf="f.nombre.errors?.required" class="invalido">Nombre es requerido</div>      
     <input matInput placeholder="Nombre" required formControlName="nombre">
   </mat-form-field>
 
-  <mat-form-field class="example-full-width">          
+  <mat-form-field class="example-full-width">      
+    <div *ngIf="f.resena.errors?.required" class="invalido">Reseña es requerido</div>    
     <input matInput placeholder="Reseña" required formControlName="resena">
   </mat-form-field>
 
   <mat-form-field class="example-full-width">          
+    <div *ngIf="f.duracion.errors?.minlength" class="invalido">La duración debe ser mayor</div>
+    <div *ngIf="f.duracion.errors?.required" class="invalido">Duracion requerida</div>
     <input matInput placeholder="Duración" minlength="2" required formControlName="duracion" type="text">
   </mat-form-field>
 

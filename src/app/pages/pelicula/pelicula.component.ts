@@ -2,7 +2,10 @@ import { switchMap } from 'rxjs/operators';
 import { PeliculaService } from './../../_service/pelicula.service';
 import { Pelicula } from './../../_model/pelicula';
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { MatPaginator, MatSort, MatTableDataSource, MatSnackBar } from '@angular/material';
+import { MatTableDataSource } from '@angular/material/table';
+import { MatPaginator } from '@angular/material/paginator';
+import { MatSort } from '@angular/material/sort';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-pelicula',
@@ -23,6 +26,19 @@ export class PeliculaComponent implements OnInit {
   ) { }
 
   ngOnInit() {
+    this.peliculaService.peliculaCambio.subscribe(data => {
+      this.dataSource = new MatTableDataSource(data);
+      this.dataSource.sort = this.sort;
+      this.dataSource.paginator = this.paginator;
+    });
+
+    this.peliculaService.mensajeCambio.subscribe(data => {
+      this.snackBar.open(data, 'AVISO', {
+        duration: 2000
+      });
+    });
+
+
     this.peliculaService.peliculaCambio.subscribe(data => {
       this.dataSource = new MatTableDataSource(data);
       this.dataSource.sort = this.sort;
